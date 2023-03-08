@@ -9,7 +9,12 @@ const { Category, Product } = require('../../models');
 // Route to find all categories
 router.get('/', async (req, res) => {
   try {
-    const categoriesData = await Category.findAll(); // Find all categories using the Category model
+    const categoriesData = await Category.findAll({}); // Find all categories using the Category model
+    console.log (categoriesData)
+    if (categoriesData.length <= 0) {
+      res.status(404).send("cannot get categoies");
+      return;
+    }
     res.status(200).json(categoriesData); // Respond with a JSON object containing the categories data
   } catch (err) {
     res.status(500).json(err); // If there's an error, respond with a JSON object containing the error message
@@ -66,6 +71,9 @@ router.delete('/:id', async (req, res) => {
       id: req.params.id
     }
   });
+  if (!categoriesData) {
+    res.status(400).send("delete category failed")
+  }
   res.status(200).end(); // Respond with a success status code
  } catch(err) {
   res.status(500).json(err); // If there's an error, respond with a JSON object containing the error message

@@ -1,6 +1,7 @@
 // Import the Router function from the Express library
 const router = require('express').Router();
 
+const { request } = require('express');
 // Import the Product, Category, Tag, and ProductTag models
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
@@ -42,6 +43,7 @@ router.post('/', (req, res) => {
 
   Product.create(req.body) // Create a new product using the Product model and the request body
     .then((product) => {
+      console.log (req.body,product)
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
       if (req.body.tagIds.length) {
         const productTagIdArr = req.body.tagIds.map((tag_id) => {
